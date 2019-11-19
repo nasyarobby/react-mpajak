@@ -35,20 +35,6 @@ export default function CreateBilling() {
     });
   };
 
-  const validateForm = () => {
-    if (
-      state.jenisPajak.kode !== "" &&
-      state.jenisSetoran !== "" &&
-      state.masaAwal &&
-      state.masaAkhir &&
-      state.tahunPajak
-    ) {
-      return true;
-    } else {
-      return false;
-    }
-  };
-
   const [state, setState] = React.useState({
     jenisPajak: { kode: "", jenisSetoran: [] },
     jenisSetoran: { kode: "" },
