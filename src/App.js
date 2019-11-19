@@ -7,6 +7,7 @@ import ApplicationBar from "./Components/ApplicationBar";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import HomeRoute from "./Routes/Home";
 import CreateBilling from "./Routes/CreateBilling";
+import Login from "./Routes/Login";
 
 export default function SimpleContainer() {
   return (
@@ -16,6 +17,9 @@ export default function SimpleContainer() {
         <ApplicationBar></ApplicationBar>
         <Container maxWidth="sm" mt={10} style={{ marginTop: 30 }}>
           <Switch>
+            <Route path="/login">
+              <Login />
+            </Route>
             <Route path="/rekam-ssp">
               <CreateBilling />
             </Route>
