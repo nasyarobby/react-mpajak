@@ -13,6 +13,7 @@ import TahunPajakSelect from "./../Components/TahunPajakSelect";
 import NominalPembayaran from "./../Components/NominalPembayaran";
 import KetetapanTextField from "../Components/KetetapanTextField";
 import Terbilang from "./../Components/Terbilang";
+import { Button } from "@material-ui/core";
 
 export default function CreateBilling() {
   const boxPadding = 1.4;
@@ -34,6 +35,20 @@ export default function CreateBilling() {
     });
   };
 
+  const validateForm = () => {
+    if (
+      state.jenisPajak.kode !== "" &&
+      state.jenisSetoran !== "" &&
+      state.masaAwal &&
+      state.masaAkhir &&
+      state.tahunPajak
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   const [state, setState] = React.useState({
     jenisPajak: { kode: "", jenisSetoran: [] },
     jenisSetoran: { kode: "" },
@@ -46,6 +61,13 @@ export default function CreateBilling() {
     ketetapanIsVisible: false,
     nominalPembayaran: ""
   });
+
+  const submitIsDisabled =
+    state.jenisPajak.kode == "" ||
+    state.jenisSetoran.kode == "" ||
+    !state.masaAwal ||
+    !state.masaAkhir ||
+    !state.nominalPembayaran;
 
   const nominalPembayaranOnChangeHandler = e => {
     const value =
@@ -70,12 +92,14 @@ export default function CreateBilling() {
   const jenisSetoranOnChangeHandler = async e => {
     let setoran = await findSetoran(e.target.value);
     console.log(setoran.kode);
-    let ketetapanIsVisible;
+    let ketetapanIsVisible, submitIsDisabled;
+
     if (Number(e.target.value) >= 300 && Number(e.target.value) <= 399) {
       ketetapanIsVisible = true;
     } else {
       ketetapanIsVisible = false;
     }
+
     if (setoran.annualOnly) {
       setState({
         ...state,
@@ -132,7 +156,7 @@ export default function CreateBilling() {
       <Grid container>
         <Grid item xs={12}>
           <Box p={boxPadding}>
-            <h1>Buat Billing Bayar SSP</h1>
+            <h1>Buat Surat Setoran Elektronik</h1>
           </Box>
         </Grid>
         <Grid item xs={12}>
@@ -248,6 +272,19 @@ export default function CreateBilling() {
           <Box p={boxPadding}>
             <FormControl fullWidth>
               <TextField multiline label="Uraian (opsional)"></TextField>
+            </FormControl>
+          </Box>
+        </Grid>
+        <Grid item xs={12}>
+          <Box p={boxPadding}>
+            <FormControl fullWidth>
+              <Button
+                disabled={submitIsDisabled}
+                variant="contained"
+                color="primary"
+              >
+                Buat SSE
+              </Button>
             </FormControl>
           </Box>
         </Grid>
