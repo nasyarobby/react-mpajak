@@ -1,26 +1,30 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Container from "@material-ui/core/Container";
 
-function App() {
+import ApplicationBar from "./Components/ApplicationBar";
+
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import HomeRoute from "./Routes/Home";
+import CreateBilling from "./Routes/CreateBilling";
+
+export default function SimpleContainer() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <React.Fragment>
+      <CssBaseline />
+      <Router>
+        <ApplicationBar></ApplicationBar>
+        <Container maxWidth="sm" mt={10} style={{ marginTop: 30 }}>
+          <Switch>
+            <Route path="/rekam-ssp">
+              <CreateBilling />
+            </Route>
+            <Route path="/">
+              <HomeRoute />
+            </Route>
+          </Switch>
+        </Container>
+      </Router>
+    </React.Fragment>
   );
 }
-
-export default App;
