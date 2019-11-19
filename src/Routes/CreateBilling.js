@@ -16,6 +16,7 @@ import Terbilang from "./../Components/Terbilang";
 
 export default function CreateBilling() {
   const boxPadding = 1.4;
+  const maximumNominal = 9999999999999;
 
   const findJenisPajak = kodeJenisPajak => {
     return new Promise(res => {
@@ -36,16 +37,22 @@ export default function CreateBilling() {
   const [state, setState] = React.useState({
     jenisPajak: { kode: "", jenisSetoran: [] },
     jenisSetoran: { kode: "" },
+    jenisSetoranIsDisabled: true,
     masaAwal: 1,
     masaAkhir: 12,
     masaAwalIsDisabled: false,
     masaAkhirIsDisabled: false,
+    tahunPajak: new Date().getFullYear(),
     ketetapanIsVisible: false,
     nominalPembayaran: ""
   });
 
   const nominalPembayaranOnChangeHandler = e => {
-    setState({ ...state, nominalPembayaran: Math.abs(e.target.value) });
+    const value =
+      Math.abs(e.target.value) > maximumNominal
+        ? maximumNominal
+        : Math.abs(e.target.value);
+    setState({ ...state, nominalPembayaran: value });
   };
 
   const jenisPajakOnChangeHandler = async e => {
@@ -55,7 +62,8 @@ export default function CreateBilling() {
       jenisPajak: pajak,
       jenisSetoran: { kode: "" },
       masaAwalIsDisabled: false,
-      masaAkhirIsDisabled: false
+      masaAkhirIsDisabled: false,
+      jenisSetoranIsDisabled: false
     });
   };
 
@@ -153,6 +161,7 @@ export default function CreateBilling() {
             <FormControl fullWidth>
               <InputLabel>Jenis Setoran</InputLabel>
               <Select
+                disabled={state.jenisSetoranIsDisabled}
                 value={state.jenisSetoran.kode}
                 onChange={jenisSetoranOnChangeHandler}
                 inputProps={{
@@ -201,7 +210,7 @@ export default function CreateBilling() {
             <FormControl fullWidth>
               <InputLabel shrink>Tahun Pajak</InputLabel>
               <TahunPajakSelect
-                value={new Date().getFullYear()}
+                value={state.tahunPajak}
                 min={1980}
                 max={2020}
                 reversed
