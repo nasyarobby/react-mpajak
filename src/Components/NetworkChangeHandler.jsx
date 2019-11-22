@@ -38,7 +38,7 @@ class NetworkDetector extends Component {
               if (!this.offlineMsgKey)
                 this.offlineMsgKey = this.props.enqueueSnackbar(
                   "Sepertinya kamu offline. Cek koneksi kamu.",
-                  { persist: true, variant: "error" }
+                  { persist: true }
                 );
             })
           );
