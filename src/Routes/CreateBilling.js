@@ -49,8 +49,8 @@ export default function CreateBilling() {
   });
 
   const submitIsDisabled =
-    state.jenisPajak.kode == "" ||
-    state.jenisSetoran.kode == "" ||
+    state.jenisPajak.kode === "" ||
+    state.jenisSetoran.kode === "" ||
     !state.masaAwal ||
     !state.masaAkhir ||
     !state.nominalPembayaran;
@@ -78,7 +78,7 @@ export default function CreateBilling() {
   const jenisSetoranOnChangeHandler = async e => {
     let setoran = await findSetoran(e.target.value);
     console.log(setoran.kode);
-    let ketetapanIsVisible, submitIsDisabled;
+    let ketetapanIsVisible;
 
     if (Number(e.target.value) >= 300 && Number(e.target.value) <= 399) {
       ketetapanIsVisible = true;
