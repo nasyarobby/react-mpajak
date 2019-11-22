@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import { Component } from "react";
 import { withSnackbar } from "notistack";
 
 class NetworkDetector extends Component {
@@ -26,30 +26,37 @@ class NetworkDetector extends Component {
         })
           .then(() => {
             this.setState({ isDisconnected: false }, () => {
+              this.props.closeSnackbar(this.offlineMsgKey);
+              this.props.enqueueSnackbar("Terhubung ke server!", {
+                variant: "success"
+              });
               return clearInterval(webPing);
             });
           })
-          .catch(() => this.setState({ isDisconnected: true }));
+          .catch(() =>
+            this.setState({ isDisconnected: true }, () => {
+              if (!this.offlineMsgKey)
+                this.offlineMsgKey = this.props.enqueueSnackbar(
+                  "Sepertinya kamu offline. Cek koneksi kamu.",
+                  { persist: true, variant: "error" }
+                );
+            })
+          );
       }, 2000);
       return;
     }
 
-    return this.setState({ isDisconnected: true });
+    return this.setState({ isDisconnected: true }, () => {
+      if (!this.offlineMsgKey)
+        this.offlineMsgKey = this.props.enqueueSnackbar(
+          "Sepertinya kamu offline. Cek koneksi kamu.",
+          { persist: true, variant: "error" }
+        );
+    });
   };
 
   render() {
-    if (this.state.isDisconnected) {
-      this.offlineMsgKey = this.props.enqueueSnackbar(
-        "Sepertinya kamu offline. Cek koneksi kamu.",
-        { persist: true, variant: "error" }
-      );
-    } else {
-      this.props.closeSnackbar(this.offlineMsgKey);
-      this.props.enqueueSnackbar("Terhubung ke server!", {
-        variant: "success"
-      });
-    }
-    return "";
+    return null;
   }
 }
 
