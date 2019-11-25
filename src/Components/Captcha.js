@@ -18,7 +18,7 @@ class Captcha extends Component {
       .put("http://localhost:3000/api/sse/sessions/")
       .then(resp => {
         this.setState({ key: resp.data.data.key });
-        localStorage.setItem("key", resp.data.data.key);
+        window.localStorage.setItem("key", resp.data.data.key);
       })
       .catch(error => {
         this.props.enqueueSnackbar("Server is offline", { variant: "error" });
